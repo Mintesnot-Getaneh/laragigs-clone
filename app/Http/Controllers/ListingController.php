@@ -29,6 +29,8 @@ class ListingController extends Controller
     //store listing data
 
     public function store(Request $request) {
+           
+    // ...
         $formfields = $request->validate([
             'title' => 'required',
             'tags' =>'required',
@@ -38,7 +40,10 @@ class ListingController extends Controller
             'website' => 'required',
             'description' => 'required',
         ]);
+
+        Listing::create($formfields);
+        
   
-     return redirect('/');
+     return redirect('/')->with('message', 'Listing created successfully!');
        }
 }
