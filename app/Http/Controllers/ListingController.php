@@ -29,9 +29,6 @@ class ListingController extends Controller
     //store listing data
 
     public function store(Request $request) {
-
-           
-    // ...
         $formfields = $request->validate([
             'title' => 'required',
             'tags' =>'required',
@@ -51,4 +48,32 @@ class ListingController extends Controller
   
      return redirect('/')->with('message', 'Listing created successfully!');
        }
+
+       //show edit form
+     public function edit (Listing $listing) {
+        return view('listings.edit',['listing' => $listing]);
+     }
+
+     //update listing data
+      public function update(Request $request, Listing $listing) {
+        $formfields = $request->validate([
+            'title' => 'required',
+            'tags' =>'required',
+            'company' => 'required', 
+            'location' => 'required',
+            'email' => ['required', 'email'],
+            'website' => 'required',
+            'description' => 'required',
+        ] );
+
+        if($request->hasFile('logo')) {
+            $formfields['logo'] = $request->file('logo')->store('logos','public');
+        }
+
+        $listing->update($formfields);
+        
+  
+     return back()->with('message', 'Listing updated successfully!');
+       }
+
 }
